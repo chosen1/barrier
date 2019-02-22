@@ -4,6 +4,8 @@
 
 This means you can select an area of the client screen to 'share out' to the server, and the server can only move the mouse and type into windows that are in the selected area. This is useful for multimonitor KVM setups where you might want to have some of the monitors on a KVM switch between two machines, and some not, and use Barrier to allow access to all the screens regardless of which machine is selected on the KVM.
 
+![Picture of Barrier](https://i.postimg.cc/bJLtGh1R/image.png)
+
 # Barrier
 
 Eliminate the barrier between your machines.
