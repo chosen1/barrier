@@ -6,7 +6,7 @@ cd /d %~dp0
 
 if not exist build\bin\Release goto buildproject
 
-cd build\installer
+cd build\installer-wix
 if ERRORLEVEL 1 goto buildproject
 
 echo Building 64-bit Windows installer...

@@ -1,7 +1,7 @@
 @echo off
 
 REM defaults - override them by creating a build_env.bat file
-set B_BUILD_TYPE=Debug
+set B_BUILD_TYPE=Release
 set B_QT_ROOT=d:\Qt\Qt5.11.1
 set B_QT_VER=5.11.1
 set B_QT_MSVC=msvc2017_64
