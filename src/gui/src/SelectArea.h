@@ -22,14 +22,20 @@
 #include <QtGui>
 #include <QtWidgets>
 
-class SelectArea : public QWidget
+class SelectArea : public QDialog
 {
 	Q_OBJECT
 
 private:
 	QRect m_selectedArea;
+	QBrush m_transparentBackground;
 	QBrush m_selectBackground;
 	QPen m_selectBorder;
+	QFont m_textBoxFont;
+	bool m_drawing;
+	QPoint m_drawingAnchor;
+	QString m_textBoxMessage;
+	QRect m_textBoxRect;
 
 public:
 	SelectArea(QWidget *parent);
@@ -37,12 +43,18 @@ public:
 	void resizeToFullScreen();
 	QRect getWholeScreenArea(void);
 	void setSelectedArea(QRect r);
+	QRect selectedArea(void);
 
 protected:
-	void paintEvent(QPaintEvent *event);
-	
+	virtual void paintEvent(QPaintEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *evt);
+	virtual void mousePressEvent(QMouseEvent *evt);
+	virtual void mouseReleaseEvent(QMouseEvent *ev);
+	virtual void keyPressEvent(QKeyEvent *evt);
+
 
 private slots:
+	
 
 	
 };

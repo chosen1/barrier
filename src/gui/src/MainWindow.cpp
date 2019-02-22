@@ -32,6 +32,7 @@
 #include "SslCertificate.h"
 #include "ShutdownCh.h"
 #include "common/DataDirectories.h"
+#include "SelectArea.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -149,10 +150,10 @@ MainWindow::MainWindow(QSettings& settings, AppConfig& appConfig) :
 		screenrect = screenrect.united(vgrect);
 	}
 
-//	m_pLineEditConstraintX->setValidator(new QIntValidator(0, INT_MAX, this));
-//	m_pLineEditConstraintY->setValidator(new QIntValidator(0, INT_MAX, this));
-//	m_pLineEditConstraintW->setValidator(new QIntValidator(0, INT_MAX, this));
-//	m_pLineEditConstraintH->setValidator(new QIntValidator(0, INT_MAX, this));
+	m_pLineEditConstraintX->setValidator(new QIntValidator(0, INT_MAX, this));
+	m_pLineEditConstraintY->setValidator(new QIntValidator(0, INT_MAX, this));
+	m_pLineEditConstraintW->setValidator(new QIntValidator(0, INT_MAX, this));
+	m_pLineEditConstraintH->setValidator(new QIntValidator(0, INT_MAX, this));
 
     // resize window to smallest reasonable size
     resize(0, 0);
@@ -1057,7 +1058,23 @@ void MainWindow::on_m_pActionSettings_triggered()
 
 void MainWindow::on_m_pActionSelectArea_triggered()
 {
-	// xxx
+	QRect selectedArea(
+		m_pLineEditConstraintX->text().toInt(),
+		m_pLineEditConstraintY->text().toInt(),
+		m_pLineEditConstraintW->text().toInt(),
+		m_pLineEditConstraintH->text().toInt());
+
+	SelectArea sa(this);
+	sa.setSelectedArea(selectedArea);
+	if (sa.exec()==QDialog::Accepted)
+	{
+		selectedArea = sa.selectedArea();
+
+		m_pLineEditConstraintX->setText(QString::number(selectedArea.left()));
+		m_pLineEditConstraintY->setText(QString::number(selectedArea.top()));
+		m_pLineEditConstraintW->setText(QString::number(selectedArea.width()));
+		m_pLineEditConstraintH->setText(QString::number(selectedArea.height()));
+	}
 }
 
 void MainWindow::autoAddScreen(const QString name)

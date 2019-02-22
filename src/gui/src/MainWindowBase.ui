@@ -562,21 +562,36 @@
    </hints>
   </connection>
   <connection>
-     <sender>m_pButtonToggleStart</sender>
-     <signal>clicked()</signal>
-     <receiver>m_pActionStartBarrier</receiver>
-     <slot>trigger()</slot>
-     <hints>
-	  <hint type="sourcelabel">
-	     <x>361</x>
-	     <y>404</y>
-	  </hint>
-	  <hint type="destinationlabel">
-	     <x>-1</x>
-	     <y>-1</y>
-	  </hint>
-	</hints>
+   <sender>m_pButtonToggleStart</sender>
+   <signal>clicked()</signal>
+   <receiver>m_pActionStartBarrier</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>361</x>
+     <y>404</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
   </connection>
-
+  <connection>
+   <sender>m_pButtonSelectArea</sender>
+   <signal>clicked()</signal>
+   <receiver>m_pActionSelectArea</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>500</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>
