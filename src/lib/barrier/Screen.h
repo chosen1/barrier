@@ -283,14 +283,18 @@ public:
     bool                isFakeDraggingStarted() const;
 
     //! Get the filename of the file being dragged
-    String&            getDraggingFilename() const;
+    String&				getDraggingFilename() const;
 
     //! Clear the filename of the file that was dragged
     void                clearDraggingFilename();
 
     //! Get the drop target directory
-    const String&        getDropTarget() const;
+    const String&		getDropTarget() const;
 
+	//! Constrain screen to specific area
+	bool				enableScreenConstraints(SInt32 x, SInt32 y,
+							SInt32 width, SInt32 height);
+	void				disableScreenConstraints();
     //@}
 
     // IScreen overrides
@@ -312,6 +316,8 @@ protected:
     void                enterSecondary(KeyModifierMask toggleMask);
     void                leavePrimary();
     void                leaveSecondary();
+
+	void				applyScreenContraints(SInt32& x, SInt32& y);
 
 private:
     // our platform dependent screen
@@ -335,6 +341,12 @@ private:
 
     // true if we're faking input on a primary screen
     bool                m_fakeInput;
+
+	// true if we're constraining the screen
+	bool				m_screenConstrained;
+
+	// Screen constraints
+	SInt32				m_sc_x, m_sc_y, m_sc_h, m_sc_w;
 
     IEventQueue*        m_events;
 

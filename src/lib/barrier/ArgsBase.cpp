@@ -43,7 +43,12 @@ m_shouldExit(false),
 m_barrierAddress(),
 m_enableCrypto(false),
 m_profileDirectory(""),
-m_pluginDirectory("")
+m_pluginDirectory(""),
+m_enableScreenConstraints(false),
+m_screenConstraintX(0),
+m_screenConstraintY(0),
+m_screenConstraintW(0),
+m_screenConstraintH(0)
 {
 }
 

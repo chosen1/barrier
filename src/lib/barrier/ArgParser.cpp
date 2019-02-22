@@ -105,6 +105,13 @@ ArgParser::parseClientArgs(ClientArgs& args, int argc, const char* const* argv)
             // define scroll
             args.m_yscroll = atoi(argv[++i]);
         }
+		else if (isArg(i, argc, argv, NULL, "--constrain", 4)) {
+			args.m_enableScreenConstraints = true;
+			args.m_screenConstraintX = atoi(argv[++i]);
+			args.m_screenConstraintY = atoi(argv[++i]);
+			args.m_screenConstraintW = atoi(argv[++i]);
+			args.m_screenConstraintH = atoi(argv[++i]);
+		}
         else {
             if (i + 1 == argc) {
                 args.m_barrierAddress = argv[i];

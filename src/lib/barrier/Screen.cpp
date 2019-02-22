@@ -39,7 +39,12 @@ Screen::Screen(IPlatformScreen* platformScreen, IEventQueue* events) :
     m_fakeInput(false),
     m_events(events),
     m_mock(false),
-    m_enableDragDrop(false)
+    m_enableDragDrop(false),
+	m_screenConstrained(false),
+	m_sc_x(0),
+	m_sc_y(0), 
+	m_sc_h(0),
+	m_sc_w(0)
 {
     assert(m_screen != NULL);
 
@@ -160,6 +165,9 @@ void
 Screen::warpCursor(SInt32 x, SInt32 y)
 {
     assert(m_isPrimary);
+
+	applyScreenContraints(x, y);
+
     m_screen->warpCursor(x, y);
 }
 
@@ -231,6 +239,9 @@ void
 Screen::mouseMove(SInt32 x, SInt32 y)
 {
     assert(!m_isPrimary);
+	
+	applyScreenContraints(x, y);
+
     m_screen->fakeMouseMove(x, y);
 }
 
@@ -238,6 +249,18 @@ void
 Screen::mouseRelativeMove(SInt32 dx, SInt32 dy)
 {
     assert(!m_isPrimary);
+	
+	if (m_screenConstrained)
+	{
+		SInt32 x,y, nx, ny;
+		m_screen->getCursorPos(x, y);
+		nx = x + dx;
+		ny = y + dy;
+		applyScreenContraints(nx, ny);
+		dx = nx - x;
+		dy = ny - y;
+	}
+
     m_screen->fakeMouseRelativeMove(dx, dy);
 }
 
@@ -466,6 +489,34 @@ Screen::getDropTarget() const
     return m_screen->getDropTarget();
 }
 
+bool
+Screen::enableScreenConstraints(SInt32 x, SInt32 y, SInt32 w, SInt32 h)
+{
+	SInt32 sx, sy, sw, sh;
+	m_screen->getShape(sx, sy, sw, sh);
+
+	if (w <= 0 || h <= 0)
+		return false;
+	if(x<sx || (x+w)>(sx+sw) || y<sy || (y+h)>(sy+sh))
+		return false;
+
+	m_screenConstrained = true;
+	m_sc_x = x;
+	m_sc_y = y;
+	m_sc_w = w;
+	m_sc_h = h;
+
+	return true;
+}
+
+void
+Screen::disableScreenConstraints()
+{
+	m_screenConstrained = false;
+}
+
+
+
 void*
 Screen::getEventTarget() const
 {
@@ -481,6 +532,15 @@ Screen::getClipboard(ClipboardID id, IClipboard* clipboard) const
 void
 Screen::getShape(SInt32& x, SInt32& y, SInt32& w, SInt32& h) const
 {
+	if (m_screenConstrained)
+	{
+		x = m_sc_x;
+		y = m_sc_y;
+		w = m_sc_w;
+		h = m_sc_h;
+		return;
+	}
+
     m_screen->getShape(x, y, w, h);
 }
 
@@ -555,5 +615,24 @@ Screen::leaveSecondary()
     // release any keys we think are still down
     m_screen->fakeAllKeysUp();
 }
+
+void	
+Screen::applyScreenContraints(SInt32& x, SInt32& y)
+{
+	if (!m_screenConstrained)
+		return;
+
+	if (x < m_sc_x)
+		x = m_sc_x;
+	else if (x > (m_sc_x + m_sc_w - 1))
+		x = (m_sc_x + m_sc_w - 1);
+	
+	if (y < m_sc_y)
+		y = m_sc_y;
+	else if (y > (m_sc_y + m_sc_h - 1))
+		y = (m_sc_y + m_sc_y - 1);
+}
+
+
 
 }

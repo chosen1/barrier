@@ -236,6 +236,13 @@ ClientApp::openClientScreen()
 {
     barrier::Screen* screen = createScreen();
     screen->setEnableDragDrop(argsBase().m_enableDragDrop);
+	if (argsBase().m_enableScreenConstraints)
+	{
+		screen->enableScreenConstraints(argsBase().m_screenConstraintX,
+			argsBase().m_screenConstraintY,
+			argsBase().m_screenConstraintW,
+			argsBase().m_screenConstraintH);
+	}
     m_events->adoptHandler(m_events->forIScreen().error(),
         screen->getEventTarget(),
         new TMethodEventJob<ClientApp>(

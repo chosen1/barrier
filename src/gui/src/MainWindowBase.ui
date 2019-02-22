@@ -236,6 +236,105 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="m_pCheckBoxConstrainScreen">
+         <property name="text">
+          <string>Constrain Screen</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="constrainScreenLayout">
+         <item>
+          <widget class="QLabel" name="m_pLabelConstraintX">
+           <property name="text">
+            <string>X:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditConstraintX">
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="m_pLabelConstraintY">
+           <property name="text">
+            <string>Y:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditConstraintY">
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="m_pLabelConstraintW">
+           <property name="text">
+            <string>W:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditConstraintW">
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="m_pLabelConstraintH">
+           <property name="text">
+            <string>H:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditConstraintH">
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="m_pButtonSelectArea">
+           <property name="text">
+            <string>Select Area</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
     </item>
@@ -253,7 +352,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="Barrier.qrc">:/res/icons/16x16/padlock.png</pixmap>
+         <pixmap resource="../res/Barrier.qrc">:/res/icons/16x16/padlock.png</pixmap>
         </property>
        </widget>
       </item>
@@ -388,7 +487,7 @@
   </action>
   <action name="m_pActionShowLog">
    <property name="text">
-       <string>Show &amp;Log</string>
+    <string>Show &amp;Log</string>
    </property>
    <property name="toolTip">
     <string>Show Log</string>
@@ -397,9 +496,21 @@
     <string notr="true">F2</string>
    </property>
   </action>
+  <action name="m_pActionSelectArea">
+   <property name="text">
+    <string>Select Area</string>
+   </property>
+   <property name="toolTip">
+    <string>Select area to constrain screen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="Barrier.qrc"/>
+  <include location="../res/Barrier.qrc"/>
+  <include location="../res/Barrier.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -451,20 +562,21 @@
    </hints>
   </connection>
   <connection>
-   <sender>m_pButtonToggleStart</sender>
-   <signal>clicked()</signal>
-   <receiver>m_pActionStartBarrier</receiver>
-   <slot>trigger()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>361</x>
-     <y>404</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
+     <sender>m_pButtonToggleStart</sender>
+     <signal>clicked()</signal>
+     <receiver>m_pActionStartBarrier</receiver>
+     <slot>trigger()</slot>
+     <hints>
+	  <hint type="sourcelabel">
+	     <x>361</x>
+	     <y>404</y>
+	  </hint>
+	  <hint type="destinationlabel">
+	     <x>-1</x>
+	     <y>-1</y>
+	  </hint>
+	</hints>
   </connection>
+
  </connections>
 </ui>

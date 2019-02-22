@@ -114,7 +114,7 @@ class MainWindow : public QMainWindow, public Ui::MainWindowBase
         void updateZeroconfService();
         void serverDetected(const QString name);
 
-public slots:
+	public slots:
         void appendLogRaw(const QString& text);
         void appendLogInfo(const QString& text);
         void appendLogDebug(const QString& text);
@@ -129,6 +129,8 @@ public slots:
         bool on_m_pActionSave_triggered();
         void on_m_pActionAbout_triggered();
         void on_m_pActionSettings_triggered();
+		void on_m_pActionSelectArea_triggered();
+		
         void barrierFinished(int exitCode, QProcess::ExitStatus);
         void trayActivated(QSystemTrayIcon::ActivationReason reason);
         void stopBarrier();
@@ -136,6 +138,7 @@ public slots:
         void logError();
         void bonjourInstallFinished();
         void showLogWindow();
+		void setConstrainScreen(bool);
 
     protected:
         QSettings& settings() { return m_Settings; }
@@ -149,7 +152,7 @@ public slots:
         void saveSettings();
         void setIcon(qBarrierState state);
         void setBarrierState(qBarrierState state);
-        bool clientArgs(QStringList& args, QString& app);
+		bool clientArgs(QStringList& args, QString& app);
         bool serverArgs(QStringList& args, QString& app);
         void setStatus(const QString& status);
         void updateFromLogLine(const QString& line);

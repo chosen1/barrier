@@ -51,4 +51,9 @@ public:
     bool                m_enableCrypto;
     String                m_profileDirectory;
     String                m_pluginDirectory;
+	bool				m_enableScreenConstraints;
+	int32_t					m_screenConstraintX;
+	int32_t					m_screenConstraintY;
+	int32_t					m_screenConstraintW;
+	int32_t					m_screenConstraintH;
 };

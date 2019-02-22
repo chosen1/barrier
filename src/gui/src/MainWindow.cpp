@@ -141,6 +141,19 @@ MainWindow::MainWindow(QSettings& settings, AppConfig& appConfig) :
 
     updateSSLFingerprint();
 
+	QList<QScreen*> screens = QGuiApplication::screens();
+	QRect screenrect;
+	for (auto screen : screens)
+	{
+		QRect vgrect = screen->virtualGeometry();
+		screenrect = screenrect.united(vgrect);
+	}
+
+//	m_pLineEditConstraintX->setValidator(new QIntValidator(0, INT_MAX, this));
+//	m_pLineEditConstraintY->setValidator(new QIntValidator(0, INT_MAX, this));
+//	m_pLineEditConstraintW->setValidator(new QIntValidator(0, INT_MAX, this));
+//	m_pLineEditConstraintH->setValidator(new QIntValidator(0, INT_MAX, this));
+
     // resize window to smallest reasonable size
     resize(0, 0);
 }
@@ -261,6 +274,28 @@ void MainWindow::loadSettings()
     m_pLineEditConfigFile->setText(settings().value("configFile", QDir::homePath() + "/" + barrierConfigName).toString());
     m_pGroupClient->setChecked(settings().value("groupClientChecked", true).toBool());
     m_pLineEditHostname->setText(settings().value("serverHostname").toString());
+
+	m_pLineEditConstraintX->setText(settings().value("constraintX").toString());
+	m_pLineEditConstraintY->setText(settings().value("constraintY").toString());
+	m_pLineEditConstraintW->setText(settings().value("constraintW").toString());
+	m_pLineEditConstraintH->setText(settings().value("constraintH").toString());
+
+	setConstrainScreen(settings().value("constrainScreen").toBool());	
+}
+
+void MainWindow::setConstrainScreen(bool enabled)
+{
+	m_pCheckBoxConstrainScreen->setChecked(enabled);
+
+	m_pLabelConstraintX->setEnabled(enabled);
+	m_pLabelConstraintY->setEnabled(enabled);
+	m_pLabelConstraintW->setEnabled(enabled);
+	m_pLabelConstraintH->setEnabled(enabled);
+	m_pLineEditConstraintX->setEnabled(enabled);
+	m_pLineEditConstraintY->setEnabled(enabled);
+	m_pLineEditConstraintW->setEnabled(enabled);
+	m_pLineEditConstraintH->setEnabled(enabled);
+	m_pButtonSelectArea->setEnabled(enabled);
 }
 
 void MainWindow::initConnections()
@@ -271,6 +306,7 @@ void MainWindow::initConnections()
     connect(m_pActionStopBarrier, SIGNAL(triggered()), this, SLOT(stopBarrier()));
     connect(m_pActionShowLog, SIGNAL(triggered()), this, SLOT(showLogWindow()));
     connect(m_pActionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
+	connect(m_pCheckBoxConstrainScreen, SIGNAL(clicked(bool)), this, SLOT(setConstrainScreen(bool)));
 }
 
 void MainWindow::saveSettings()
@@ -282,6 +318,12 @@ void MainWindow::saveSettings()
     settings().setValue("useInternalConfig", m_pRadioInternalConfig->isChecked());
     settings().setValue("groupClientChecked", m_pGroupClient->isChecked());
     settings().setValue("serverHostname", m_pLineEditHostname->text());
+	settings().setValue("constrainScreen", m_pCheckBoxConstrainScreen->isChecked());
+	settings().setValue("constraintX", m_pLineEditConstraintX->text().toInt());
+	settings().setValue("constraintY", m_pLineEditConstraintY->text().toInt());
+	settings().setValue("constraintW", m_pLineEditConstraintW->text().toInt());
+	settings().setValue("constraintH", m_pLineEditConstraintH->text().toInt());
+
 
     settings().sync();
 }
@@ -576,6 +618,16 @@ bool MainWindow::clientArgs(QStringList& args, QString& app)
         args << "--log" << appConfig().logFilenameCmd();
     }
 
+	if (m_pCheckBoxConstrainScreen->isChecked())
+	{
+		int x = m_pLineEditConstraintX->text().toInt();
+		int y = m_pLineEditConstraintY->text().toInt();
+		int w = m_pLineEditConstraintW->text().toInt();
+		int h = m_pLineEditConstraintH->text().toInt();
+
+		args << "--constrain" << QString::number(x) << QString::number(y) << QString::number(w) << QString::number(h);
+	}
+
     // check auto config first, if it is disabled or no server detected,
     // use line edit host name if it is not empty
     if (m_pCheckBoxAutoConfig->isChecked()) {
@@ -812,6 +864,7 @@ void MainWindow::setBarrierState(qBarrierState state)
     m_BarrierState = state;
 }
 
+
 void MainWindow::setVisible(bool visible)
 {
     QMainWindow::setVisible(visible);
@@ -1000,6 +1053,11 @@ void MainWindow::on_m_pActionSettings_triggered()
 {
     if (SettingsDialog(this, appConfig()).exec() == QDialog::Accepted)
         updateSSLFingerprint();
+}
+
+void MainWindow::on_m_pActionSelectArea_triggered()
+{
+	// xxx
 }
 
 void MainWindow::autoAddScreen(const QString name)
